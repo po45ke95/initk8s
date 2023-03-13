@@ -6,13 +6,13 @@ NC='\033[0m' # No Color
 
 printf "${GRN}==Prepare install kubernetes training environment for ubuntu 22.04==${NC}\n"
 WORKERNAME=$RANDOM
-sudo hostnamectl set-hostname worker${WORKERNAME}.suserancher.lab
+sudo hostnamectl set-hostname worker${WORKERNAME}
 
 #install net-tools for scripts
 sudo apt install net-tools -y
 IPNAME=$(ifconfig ens3 |grep inet|cut -d ' ' -f 10 |head -n 1)
 
-sudo echo "${IPNAME} worker${WORKERNAME}.suserancher.lab" >> /etc/hosts
+sudo echo "${IPNAME} worker${WORKERNAME}" >> /etc/hosts
 sleep 1
 
 printf "${RED}==phase 1: modify file system==${NC}\n"
