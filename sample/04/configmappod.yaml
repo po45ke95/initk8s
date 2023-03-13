@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: configmappod
+  name: configmappod
+spec:
+  containers:
+  - args:
+    - /bin/sleep
+    - "3600"
+    image: busybox
+    name: configmappod
+    resources: {}
+    volumeMounts:
+    - name: cm
+      mountPath: "/etc/cm"
+      readOnly: true
+  volumes:
+  - name: cm
+    configMap:
+      name: cm1
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}

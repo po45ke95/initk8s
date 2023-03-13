@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: miscfgpod
+  name: miscfgpod
+spec:
+  containers:
+  - image: nginx
+    name: miscfgpod
+    volumeMounts:
+    - mountPath: /export
+      name: test-volume
+  volumes:
+  - name: test-volume
+    hostPath:
+      path: /home
+      type: Directory
+status: {}

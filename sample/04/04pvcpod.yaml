@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: web-server
+spec:
+  volumes:
+    - name: task-pv-storage
+      persistentVolumeClaim:
+        claimName: pvc
+  initContainers:
+  - args:
+    - /bin/sh
+    - -c
+    - 'touch /context/index.html && echo "This is PVC! Good Bye:)" >> /context/index.html'
+    image: busybox
+    name: gencontext
+    volumeMounts:
+    - mountPath: /context
+      name: task-pv-storage
+  containers:
+    - name: web-server
+      image: nginx
+      ports:
+        - containerPort: 80
+          name: "http-server"
+      volumeMounts:
+        - mountPath: "/usr/share/nginx/html"
+          name: task-pv-storage

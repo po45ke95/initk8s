@@ -1,0 +1,190 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  annotations:
+    cni.projectcalico.org/podIP: 10.6.149.97/32
+    cni.projectcalico.org/podIPs: 10.6.149.97/32
+  creationTimestamp: "2021-05-29T08:20:24Z"
+  labels:
+    run: sidecar
+  managedFields:
+  - apiVersion: v1
+    fieldsType: FieldsV1
+    fieldsV1:
+      f:metadata:
+        f:labels:
+          .: {}
+          f:run: {}
+      f:spec:
+        f:containers:
+          k:{"name":"genlog"}:
+            .: {}
+            f:args: {}
+            f:image: {}
+            f:imagePullPolicy: {}
+            f:name: {}
+            f:resources: {}
+            f:terminationMessagePath: {}
+            f:terminationMessagePolicy: {}
+            f:volumeMounts:
+              .: {}
+              k:{"mountPath":"/var/log"}:
+                .: {}
+                f:mountPath: {}
+                f:name: {}
+        f:dnsPolicy: {}
+        f:enableServiceLinks: {}
+        f:restartPolicy: {}
+        f:schedulerName: {}
+        f:securityContext: {}
+        f:terminationGracePeriodSeconds: {}
+        f:volumes:
+          .: {}
+          k:{"name":"log"}:
+            .: {}
+            f:emptyDir: {}
+            f:name: {}
+    manager: kubectl-create
+    operation: Update
+    time: "2021-05-29T08:20:24Z"
+  - apiVersion: v1
+    fieldsType: FieldsV1
+    fieldsV1:
+      f:metadata:
+        f:annotations:
+          .: {}
+          f:cni.projectcalico.org/podIP: {}
+          f:cni.projectcalico.org/podIPs: {}
+    manager: calico
+    operation: Update
+    time: "2021-05-29T08:20:25Z"
+  - apiVersion: v1
+    fieldsType: FieldsV1
+    fieldsV1:
+      f:status:
+        f:conditions:
+          k:{"type":"ContainersReady"}:
+            .: {}
+            f:lastProbeTime: {}
+            f:lastTransitionTime: {}
+            f:status: {}
+            f:type: {}
+          k:{"type":"Initialized"}:
+            .: {}
+            f:lastProbeTime: {}
+            f:lastTransitionTime: {}
+            f:status: {}
+            f:type: {}
+          k:{"type":"Ready"}:
+            .: {}
+            f:lastProbeTime: {}
+            f:lastTransitionTime: {}
+            f:status: {}
+            f:type: {}
+        f:containerStatuses: {}
+        f:hostIP: {}
+        f:phase: {}
+        f:podIP: {}
+        f:podIPs:
+          .: {}
+          k:{"ip":"10.6.149.97"}:
+            .: {}
+            f:ip: {}
+        f:startTime: {}
+    manager: kubelet
+    operation: Update
+    time: "2021-05-29T08:20:28Z"
+  name: sidecar
+  namespace: default
+  resourceVersion: "188329"
+  uid: 45a3d0b3-4a64-442b-bdb1-c5ef6b0075a6
+spec:
+  containers:
+  - args:
+    - /bin/sh
+    - -c
+    - i=0; while true; do echo "$(date)" >> /var/log/log.file; i=$((i+1)); sleep 1;
+      done
+    image: busybox
+    imagePullPolicy: Always
+    name: genlog
+    resources: {}
+    terminationMessagePath: /dev/termination-log
+    terminationMessagePolicy: File
+    volumeMounts:
+    - mountPath: /var/log
+      name: log
+    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      name: default-token-klthj
+      readOnly: true
+  - name: sidebike
+    image: busybox
+    args: [/bin/sh, -c,
+           'tail -n+1 -f /var/log/log.file']
+    volumeMounts:
+    - mountPath: /var/log
+      name: log
+  dnsPolicy: ClusterFirst
+  enableServiceLinks: true
+  nodeName: worker.inwinstack.lab
+  preemptionPolicy: PreemptLowerPriority
+  priority: 0
+  restartPolicy: Always
+  schedulerName: default-scheduler
+  securityContext: {}
+  serviceAccount: default
+  serviceAccountName: default
+  terminationGracePeriodSeconds: 30
+  tolerations:
+  - effect: NoExecute
+    key: node.kubernetes.io/not-ready
+    operator: Exists
+    tolerationSeconds: 300
+  - effect: NoExecute
+    key: node.kubernetes.io/unreachable
+    operator: Exists
+    tolerationSeconds: 300
+  volumes:
+  - emptyDir: {}
+    name: log
+  - name: default-token-klthj
+    secret:
+      defaultMode: 420
+      secretName: default-token-klthj
+status:
+  conditions:
+  - lastProbeTime: null
+    lastTransitionTime: "2021-05-29T08:20:24Z"
+    status: "True"
+    type: Initialized
+  - lastProbeTime: null
+    lastTransitionTime: "2021-05-29T08:20:28Z"
+    status: "True"
+    type: Ready
+  - lastProbeTime: null
+    lastTransitionTime: "2021-05-29T08:20:28Z"
+    status: "True"
+    type: ContainersReady
+  - lastProbeTime: null
+    lastTransitionTime: "2021-05-29T08:20:24Z"
+    status: "True"
+    type: PodScheduled
+  containerStatuses:
+  - containerID: docker://a3095716788e8ff83ac6b082c4c0b009726f34328d27ad6b0166b2fef2e1a42f
+    image: busybox:latest
+    imageID: docker-pullable://busybox@sha256:b5fc1d7b2e4ea86a06b0cf88de915a2c43a99a00b6b3c0af731e5f4c07ae8eff
+    lastState: {}
+    name: genlog
+    ready: true
+    restartCount: 0
+    started: true
+    state:
+      running:
+        startedAt: "2021-05-29T08:20:27Z"
+  hostIP: 10.140.0.18
+  phase: Running
+  podIP: 10.6.149.97
+  podIPs:
+  - ip: 10.6.149.97
+  qosClass: BestEffort
+  startTime: "2021-05-29T08:20:24Z"

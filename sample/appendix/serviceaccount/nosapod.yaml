@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: nosapod
+  name: nosapod
+spec:
+  automountServiceAccountToken: false
+  containers:
+  - args:
+    - /bin/sleep
+    - "3600"
+    image: busybox
+    name: nosapod
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}

@@ -1,0 +1,21 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  creationTimestamp: null
+  name: icmpjob
+spec:
+  template:
+    metadata:
+      creationTimestamp: null
+    spec:
+      containers:
+      - command:
+        - /bin/ping
+        - -c
+        - "4"
+        - www.google.com
+        image: busybox
+        name: icmpjob
+        resources: {}
+      restartPolicy: Never
+status: {}

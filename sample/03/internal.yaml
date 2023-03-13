@@ -1,0 +1,80 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  creationTimestamp: null
+  name: internalservice
+  labels:
+    name: internalservice
+spec: {}
+status: {}
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: internalweb
+  name: internalweb
+  namespace: internalservice
+spec:
+  initContainers:
+  - name: webcontentgen
+    image: busybox
+    command: ['sh', '-c', "echo '==this is internal web service==' > /opt/web/index.html"]
+    volumeMounts:
+    - mountPath: /opt/web
+      name: web
+  containers:
+  - image: nginx
+    name: internalweb
+    ports:
+    - containerPort: 80
+    volumeMounts:
+    - mountPath: /usr/share/nginx/html
+      name: web
+    resources: {}
+  volumes:
+  - name: web
+    emptyDir: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    run: internalweb
+  name: internalweb
+  namespace: internalservice
+spec:
+  ports:
+  - port: 9000
+    protocol: TCP
+    targetPort: 80
+  selector:
+    run: internalweb
+  type: NodePort
+status:
+  loadBalancer: {}
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: networkpod
+  name: networkpod
+  namespace: internalservice
+spec:
+  containers:
+  - args:
+    - /bin/sleep
+    - "3600"
+    image: busybox
+    name: networkpod
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}

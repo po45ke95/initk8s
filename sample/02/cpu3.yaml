@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: cpu-3
+  namespace: default
+  labels:
+    name: cpu
+spec:
+  containers:
+  - name: cpu-3
+    image: vish/stress
+    resources:
+      limits:
+        cpu: "0.5"
+      requests:
+        cpu: "0.1"
+    args:
+    - -cpus
+    - "1"

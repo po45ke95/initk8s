@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-lab
+  annotations:
+    kubernetes.io/ingress.class: traefik
+    traefik.ingress.kubernetes.io/rewrite-target: /
+  namespace: externaldomain
+spec:
+  rules:
+  - http:
+      paths:
+      - pathType: Prefix
+        path: /ing
+        backend:
+          service:
+            name: web1
+            port:
+              number: 80

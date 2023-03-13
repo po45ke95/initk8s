@@ -1,0 +1,10 @@
+apiVersion: v1
+data:
+  val1: |
+    CFG1
+  val2: |
+    CFG2
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  name: cm1
