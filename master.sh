@@ -4,15 +4,11 @@ GRN='\033[1;32m' # notice
 YEL='\033[1;33m' # warning
 NC='\033[0m' # No Color
 
-printf "${GRN}==Prepare install kubernetes training environment for ubuntu 22.04==${NC}\n"
+printf "${GRN}==Prepare install kubernetes training environment for ubuntu 18.04==${NC}\n"
 MASTERNAME=$RANDOM
-sudo hostnamectl set-hostname master${MASTERNAME}
-
-#install net-tools for scripts
-sudo apt install net-tools -y
+sudo hostnamectl set-hostname master${MASTERNAME}.suserancher.lab
 IPNAME=$(ifconfig ens3 |grep inet|cut -d ' ' -f 10 |head -n 1)
-
-sudo echo "${IPNAME} master${MASTERNAME}" >> /etc/hosts
+sudo echo "${IPNAME} master${MASTERNAME}.suserancher.lab" >> /etc/hosts
 
 sleep 1
 
@@ -22,11 +18,11 @@ printf "${RED}==phase 1: modify file system==${NC}\n"
 OSVERSION=$(cat /etc/lsb-release |grep DISTRIB_CODENAME |cut -d '=' -f 2)
 
 # verify os info
-if [ "${OSVERSION}" = 'jammy' ];
+if [ "${OSVERSION}" = 'bionic' ];
 then
     printf "${YEL}--OS Verified-- ${NC}\n"
 else
-    printf "${RED}==OS is not Verified, use ubuntu 22.04==${NC}\n"
+    printf "${RED}==OS is not Verified, use ubuntu 18.0==${NC}\n"
     exit 0
 fi
 
