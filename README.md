@@ -16,5 +16,5 @@
 7. measure server installed
 
 ## References
-1. ingress controller: traefik
-2. measure server: here
+1. ingress controller: [traefik](https://doc.traefik.io/traefik/v1.7/user-guide/kubernetes/)
+2. measure server: [here](https://github.com/kubernetes-sigs/metrics-server)
